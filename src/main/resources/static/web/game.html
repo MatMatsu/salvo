@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ship Locations!</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- MY STYLE -->
+    <link rel="stylesheet" href="./styles/style.css">
+    <style>
+      table, th, td {border: 1px solid black;border-collapse: collapse;}
+      th, td {width: calc(3vw + 0.5vh); height: calc(3vw + 0.5vh); text-align: center;}
+      #tableros {display: flex; justify-content: space-around; width: 95vw;}
+      .tablaNaves {}
+      .homeBoton {border: 1px solid black; background-color: #DDD; padding: 2% 3%; box-shadow: 2px 2px black;}
+      .homeBoton:hover {background-color: cyan; box-shadow: none;position:relative; top: 2px; left: 2px;}
+
+      .patrolBoat, .submarine, .destroyer, .battleship, .carrier {background-color: lightblue;text-align: center; border: 1px solid black;}
+      .X {height: 40px;}
+      .Y {width: 40px;}
+      .patrolBoat.X {width: 80px;}
+      .submarine.X {width: 120px;}
+      .destroyer.X {width: 120px;} 
+      .battleship.X {width: 160px;}
+      .carrier.X {width: 200px;}
+      .patrolBoat.Y {height: 80px;}
+      .submarine.Y {height: 120px;}
+      .destroyer.Y {height: 120px;} 
+      .battleship.Y {height: 160px;}
+      .carrier.Y {height: 200px;}
+
+      .navesZone {width: 50vw;}
+      #navesZoneH, #navesZoneV {display: flex; justify-content: space-evenly; background-color: green; flex-wrap: wrap; margin: 5%; padding: 3%;}
+
+      #tableroDiv {width: 90vw;background-color: red;}
+      .filaDiv {display: flex; justify-content: center;}
+      .celdaDiv {display: flex;border: 1px solid black;width: 40px;height: 40px;}
+      .headDiv {display: flex;border: 1px solid black;width: 40px;height: 40px; background-color: yellow}
+      .posicionado {background-color: green}
+      .enviarNaves {text-align: center;}
+
+      .active {background-color: cyan;}
+
+      .btnShot {margin-left: 50%;}
+      div>h2 {display: inline-block;}
+      
+      .hit {background-color: red !important ;}
+      .fail {background-color: blue !important ;}
+      .nave {background-color: green;}
+    </style>
+</head>
+<body>
+  <div id="app">
+    <header>  
+      <h1>Ship Locations!</h1>
+      <div class="userInfo">
+        <h2>{{playerOne.email}}</h2>
+        <a href="/web/games.html" class="homeBoton">HOME</a>
+      </div>
+    </header>
+    
+    <div>
+        <h2>{{playerOne.email}} (YOU) VS {{playerTwo.email}}</h2>
+        <h2 class="turno"></h2>
+        <div id="tableros">
+          <div>
+            <h2>Ships</h2>
+            <div class="tableroNaves">
+              
+            </div>
+          </div>
+          <div>
+            <h2>Salvo</h2>
+            <button class="btnShot" disabled="true" onclick="onShot(event)">SHOT!</button>
+            <div class="tableroSalvo">
+              
+            </div>
+          </div>
+          <div class="navesZone">
+            <!-- CREAR ESTO EN JS -->
+            <div id="navesZoneH" ondragover="onDragOver(event)" ondrop="onDrop(event)">
+              <p>NAVES Horizontales</p>
+              <span class="patrolBoat X" draggable="true" ondragstart="onDragStart(event)">Patrol Boat</span>
+              <span class="submarine X" draggable="true" ondragstart="onDragStart(event)">Submarine</span>
+              <span class="destroyer X" draggable="true" ondragstart="onDragStart(event)">Destroyer</span>
+              <span class="battleship X" draggable="true" ondragstart="onDragStart(event)">Battleship</span>
+              <span class="carrier X" draggable="true" ondragstart="onDragStart(event)">Carrier</span>
+            </div>
+
+            <div id="navesZoneV" ondragover="onDragOver(event)" ondrop="onDrop(event)">
+              <p>NAVES Verticales</p>
+              <span class="patrolBoat Y" draggable="true" ondragstart="onDragStart(event)">Patrol Boat</span>
+              <span class="submarine Y" draggable="true" ondragstart="onDragStart(event)">Submarine</span>
+              <span class="destroyer Y" draggable="true" ondragstart="onDragStart(event)">Destroyer</span>
+              <span class="battleship Y" draggable="true" ondragstart="onDragStart(event)">Battleship</span>
+              <span class="carrier Y" draggable="true" ondragstart="onDragStart(event)">Carrier</span>
+            </div>
+            <div class="enviarNaves">
+              <button v-on:click="enviarNaves">ENVIAR</button>
+            </div>
+          </div>
+          <div class="estadoJuego">
+            <table class="misNaves">
+              <thead>
+                <tr>
+                  <th>Ship</th>
+                  <th>State</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Patrol Boat</td>
+                  <td class="patrolBoat">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Submarine</td>
+                  <td class="submarine">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Destroyer</td>
+                  <td class="destroyer">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Battleship</td>
+                  <td class="battleship">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Carrier</td>
+                  <td class="carrier">ALIVE</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="rivalNaves">
+              <thead>
+                <tr>
+                  <th>Ship</th>
+                  <th>State</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Patrol Boat</td>
+                  <td class="patrolBoat">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Submarine</td>
+                  <td class="submarine">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Destroyer</td>
+                  <td class="destroyer">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Battleship</td>
+                  <td class="battleship">ALIVE</td>
+                </tr>
+                <tr>
+                  <td>Carrier</td>
+                  <td class="carrier">ALIVE</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+
+    </div>
+
+    
+
+    
+  </div>
+
+  
+  
+
+
+
+
+  <!-- BOOTSTRAP JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <!-- VUE -->
+  <!-- production version, optimized for size and speed -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- WEBSOCKET -->
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+  <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+  <!-- MY JS -->
+  <script src="./scripts/game.js"></script>
+  <script src="./scripts/eventos.js"></script>
+
+</body>
+</html>

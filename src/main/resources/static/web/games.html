@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Salvo!</title>
+  <!-- BOOTSTRAP 4 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- MY STYLE -->
+  <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+  <div id="app">
+    <header>  
+      <h1>Salvo!</h1>
+      <div class="userInfo">
+        <h2>{{user.name}}</h2>
+        <form method="post" action="/logout" v-show="user.id != null">
+          <button type="submit">Logout</button>
+        </form>
+        <!--
+          <form method="get" action="/web/login.html" v-show="user.id == null">
+            <button type="submit">Login</button>
+          </form>
+        -->
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCentered" v-show="user.id == null">
+          Login / Register
+        </button>
+
+        <!-- Modal -->
+        <div class="modal" id="exampleModalCentered" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenteredLabel">Login or Register!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="formularios">
+                  <form class="logueo" method="post" action="/web/games.html">
+                    <h2 class="">Please Login</h2>
+                    <label for="username" class="">Username</label>
+                    <input type="email" id="username" name="username" class="" placeholder="Username" required autofocus autocomplete="username">
+                    <label for="password" class="">Password</label>
+                    <input type="password" id="password" name="password" class="" placeholder="Password" required autocomplete="current-password" >
+                    <button class="boton" type="submit">Login</button>
+                  </form>
+                
+                  <form class="registro" action="">
+                    <h2 class="">Register Now!</h2>
+                    <label for="newUsername" class="">E-mail</label>
+                    <input type="email" id="newUsername" name="newUsername" class="" placeholder="New Username" required autocomplete="username">
+                    <label for="newPassword" class="">Password</label>
+                    <input type="password" id="newPassword" name="newPassword" class="" placeholder="newPassword" required autocomplete="current-password">
+                    <button class="boton" type="button" v-on:click="getValues">Sign In</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        
+      </div>
+    </header>
+    <main class="tablas">
+      <!-- ++++++ -->
+      <!-- GAMES TABLE -->
+      <!-- ++++++ -->
+      <div class="gamesBoard">
+        <h2>GAMES</h2>
+        <table class="gamesTable">
+          <thead class="headGamesTable">
+            <tr>
+              <th>GAME CREATION</th>
+              <th>PLAYER 1</th>
+              <th>PLAYER 2</th>
+            </tr>
+          </thead>
+          <tbody class="bodyGamesTable">
+            <!-- data from json -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ++++++ -->
+      <!-- LEADERBOARD -->
+      <!-- ++++++ -->
+      <div class="leader">
+        <h2>LEADERBOARD</h2>
+        <table class="leaderboard">
+          <thead class="headLeaderboard">
+            <tr>
+              <th>USERNAME</th>
+              <th>TOTAL</th>
+              <th>WON</th>
+              <th>LOST</th>
+              <th>TIED</th>
+            </tr>
+          </thead>
+          <tbody class="bodyLeaderboard">
+            <!-- data from json -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <form action="">
+      <button class="boton" type="button" v-on:click="newGame()">Nuevo Juego</button>
+    </form>
+  </div>
+
+
+  <!-- BOOTSTRAP JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <!-- VUE -->
+  <!-- production version, optimized for size and speed -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- MY JS -->
+  <script src="./scripts/games.js"></script>
+</body>
+</html>
